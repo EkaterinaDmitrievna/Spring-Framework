@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.6.0-1/css/bootstrap.min.css}"/>
+</head>
+
+<body>
+<div>
+    <h1>Product list</h1>
+    <table class="table">
+        <tr><th>Title</th><th>Cost</th></tr>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.title}">...</td>
+            <td th:text="${product.cost}">...</td>
+        </tr>
+    </table>
+</div>
+
+<button type=”submit”><a href="http://localhost:8080/lesson3_war_exploded/home"> Return home</a></button>
+</body>
+</html>
