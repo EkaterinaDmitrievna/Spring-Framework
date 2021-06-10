@@ -1,0 +1,133 @@
+<!doctype html>
+
+<html ng-app="app">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+    <script src="index.js"></script>
+</head>
+
+<body>
+<h1 align="center">Онлайн магазин</h1>
+<div class="container" ng-controller="indexController">
+    <a class="btn" href="/geek/logout">Выйти</a>
+
+    <h3>Фильтр</h3>
+    <form novalidate ng-submit="fillTable()">
+        <div class="form-group row">
+
+            <div class="form-group col-md-3">
+                <label for="filterTitle">Название товара</label>
+                <input class="form-control" type="text" ng-model="filter.title" id="filterTitle">
+            </div>
+
+                <div class="form-group col-md-3">
+                    <label for="filterPrice">Цена товара</label>
+                    <input class="form-control" type="number" ng-model="filter.price" id="filterPrice">
+                </div>
+<!--            <div class="form-group col-md-3">-->
+<!--                <label for="filterCategory">Категория</label>-->
+<!--                <input class="form-control" type="text" ng-model="filter.category" id="filterCategory">-->
+
+<!--            </div>-->
+
+        </div>
+        <div>
+            <button class="btn btn-success" type="submit">Применить</button>
+        </div>
+    </form>
+    <h3>Список товаров</h3>
+    <table class="table table-hover" cellpadding="0" cellspacing="0">
+        <thead>
+        <tr>
+            <td ng-click="orderByMe('title')">Название</td>
+            <td ng-click="orderByMe('price')">Цена</td>
+
+            <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="p in ProductsPage.content| orderBy:myOrderBy">
+            <td>{{p.title}}</td>
+            <td>{{p.price}}</td>
+
+            <td>
+                <button class="btn btn-primary" ng-click="addToCart(p.id)">В корзину</button>
+            </td>
+            <td>
+        <button class="btn btn-danger" ng-click="deleteProductById(p.id)">Удалить товар</button>
+            </td>
+
+
+        </tr>
+        </tbody>
+
+    </table>
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li ng-class="ProductsPage.first ? 'page-item disabled' : 'page-item'">
+                <a class="page-link" ng-click="fillTable(ProductsPage.number)"><<<</a>
+            </li>
+
+            <li ng-class="ProductsPage.number == pageIndex - 1 ? 'page-item active' : 'page-item'" ng-repeat="pageIndex in PaginationArray">
+                <a class="page-link" ng-click="fillTable(pageIndex)">{{pageIndex}}</a>
+            </li>
+
+            <li ng-class="ProductsPage.last ? 'page-item disabled' : 'page-item'">
+                <a class="page-link" ng-click="fillTable(ProductsPage.number + 2)">>>>.</a>
+            </li>
+        </ul>
+    </nav>
+
+    <h3>Добавить новый товар</h3>
+    <form novalidate ng-submit="saveProduct()">
+        <div class="form-group col-md-6">
+            <label for="newProductTitle">Название</label>
+            <input class="form-control" type="text" ng-model="NewProduct.title" id="newProductTitle">
+        </div>
+        <div class="form-group col-md-6">
+            <label for="newProductPrice">Цена</label>
+            <input class="form-control" type="number" ng-model="NewProduct.price" id="newProductPrice">
+        </div>
+
+
+
+            <form novalidate ng-submit="fillTable()">
+
+            <h3>Корзина</h3>
+            <table class="table table-hover" cellpadding="0" cellspacing="0">
+                <thead>
+                <tr>
+                    <td>Название</td>
+                    <td>Количество</td>
+                    <td>Цена</td>
+
+                    <td></td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="i in Cart.items">
+                    <td>{{i.productTitle}}</td>
+                    <td>{{i.quantity}}</td>
+                    <td>{{i.quantity * i.price}}</td>
+                    <td>
+                        <button class="btn btn-danger" ng-click="deleteFromCart(i.productId)">Удалить</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Итого</td>
+                    <td></td>
+                    <td>{{Cart.totalPrice}}</td>
+                </tr>
+                </tbody>
+            </table>
+                <button class="btn btn-danger" ng-click="clearCart()">Очистить корзину</button>
+            </form>
+</div>
+</body>
+</html>
